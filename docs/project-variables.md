@@ -129,6 +129,35 @@
 5. **Newsletter Engagement Scoring** (ID: 5)
 6. **Event Registration Confirmation** (ID: 6)
 
+## n8n Workflow Automation
+### Instance Details
+- **Workflow URL**: https://workflows.innovareai.com/workflow/ZIY8jUA8xY5Dr7Nb
+- **API Base URL**: https://workflows.innovareai.com/api/v1/
+- **API Key**: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Yzg4NDFiNy1kODhmLTRlYWMtYWZiOS03N2Y5ODlmYzk5MTYiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzUzNDY0OTYwLCJleHAiOjE3NTU5ODY0MDB9.jmZ_lVOGPFZ3bO_XnBYZ_zrmiXL386U0NaLgrvxaxNk`
+
+### Workflows
+1. **Airtable → ActiveCampaign Sync**
+   - Workflow ID: ZIY8jUA8xY5Dr7Nb
+   - Trigger: Airtable record changes
+   - Actions: Update AC contacts, apply tags
+
+2. **New Investor Processing**
+   - Trigger: New Airtable investor record
+   - Actions: Create AC contact, start welcome series, notify team
+
+3. **Startup Application Handler**
+   - Trigger: Form submission webhook
+   - Actions: Create Airtable record, tag in AC, send confirmation
+
+4. **Weekly Metrics Aggregation**
+   - Schedule: Every Monday 9 AM PST
+   - Actions: Pull metrics from AC, update Airtable dashboard
+
+### Webhook Endpoints
+- New Investor: `https://workflows.innovareai.com/webhook/mossy-investor-new`
+- Startup Application: `https://workflows.innovareai.com/webhook/mossy-startup-apply`
+- Event Registration: `https://workflows.innovareai.com/webhook/mossy-event-register`
+
 ## GitHub Repository
 - **Repository**: InnovareAI/mossy-ventures
 - **Main Branch**: main
@@ -137,46 +166,16 @@
 - **Automation Scripts**: /automations/
 - **Templates**: /templates/
 
-## Social Media Accounts
-### LinkedIn
-- **Company Page**: https://linkedin.com/company/mossy-ventures
-- **Posting Schedule**: Daily at 9 AM PST
-- **Content Types**: Articles, Updates, Events
-
-### X (Twitter)
-- **Handle**: @MossyVentures
-- **Posting Schedule**: 3x daily
-- **Hashtags**: #AngelInvesting #SeattleStartups #MossyVentures
-
-### YouTube
-- **Channel**: Mossy Ventures Angel Investing
-- **Upload Schedule**: Weekly on Thursdays
-- **Playlists**: 
-  - Angel Investing 101
-  - Founder Stories
-  - Program Highlights
-
-## Analytics & Tracking
-### UTM Parameters
-- **Source**: newsletter, linkedin, twitter, youtube, website
-- **Medium**: email, social, organic, referral
-- **Campaign**: [program-name]-[date]
-
-### KPI Tracking
-- Google Analytics ID: UA-XXXXXXXXX-X
-- ActiveCampaign tracking enabled
-- Airtable automation for metric aggregation
-
 ## Integration Webhooks
-### Airtable → ActiveCampaign
-- New Investor: https://mossyventures.api-us1.com/webhook/investor-new
-- Startup Application: https://mossyventures.api-us1.com/webhook/startup-apply
-- Program Registration: https://mossyventures.api-us1.com/webhook/program-register
+### Airtable → ActiveCampaign (via n8n)
+- New Investor: https://workflows.innovareai.com/webhook/mossy-investor-new
+- Startup Application: https://workflows.innovareai.com/webhook/mossy-startup-apply
+- Program Registration: https://workflows.innovareai.com/webhook/mossy-event-register
 
-### ActiveCampaign → Airtable
-- Email Engagement: https://hooks.airtable.com/workflows/v1/XXXXXXXXX
-- Tag Updates: https://hooks.airtable.com/workflows/v1/YYYYYYYYY
-- Unsubscribes: https://hooks.airtable.com/workflows/v1/ZZZZZZZZZ
+### ActiveCampaign → Airtable (via n8n)
+- Email Engagement: https://workflows.innovareai.com/webhook/mossy-email-metrics
+- Tag Updates: https://workflows.innovareai.com/webhook/mossy-tag-sync
+- Unsubscribes: https://workflows.innovareai.com/webhook/mossy-unsubscribe
 
 ## Environment Variables Summary
 ```bash
@@ -189,13 +188,13 @@ AIRTABLE_INVESTORS_TABLE=tbleRwanWbTRz2F1S
 ACTIVECAMPAIGN_API_KEY=[to be configured]
 ACTIVECAMPAIGN_ACCOUNT_URL=https://mossyventures.activehosted.com
 
-# Social Media
-LINKEDIN_ACCESS_TOKEN=[to be configured]
-TWITTER_API_KEY=[to be configured]
-YOUTUBE_API_KEY=[to be configured]
+# n8n
+N8N_API_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Yzg4NDFiNy1kODhmLTRlYWMtYWZiOS03N2Y5ODlmYzk5MTYiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzUzNDY0OTYwLCJleHAiOjE3NTU5ODY0MDB9.jmZ_lVOGPFZ3bO_XnBYZ_zrmiXL386U0NaLgrvxaxNk
+N8N_INSTANCE_URL=https://workflows.innovareai.com
+N8N_WORKFLOW_ID=ZIY8jUA8xY5Dr7Nb
 
-# Analytics
-GA_TRACKING_ID=UA-XXXXXXXXX-X
+# GitHub
+GITHUB_TOKEN=[to be configured]
 ```
 
 ## Security Notes
@@ -204,3 +203,4 @@ GA_TRACKING_ID=UA-XXXXXXXXX-X
 - Use read-only permissions where possible
 - Audit access logs monthly
 - Backup Airtable data weekly
+- n8n API token expires: Check expiration date regularly
